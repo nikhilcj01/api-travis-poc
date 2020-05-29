@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+	<http:listener-config name="HTTP_Listener_config" doc:name="HTTP Listener config" doc:id="d22fb5b4-e8a4-49cf-84c3-c139d675e343" >
+		<http:listener-connection host="0.0.0.0" port="8081" />
+	</http:listener-config>
+	<flow name="api-travis-pocFlow" doc:id="748f23c3-48e6-4383-bbca-5fd0b768d29d" >
+		<http:listener doc:name="Listener" doc:id="e6e90cac-de44-4e57-a39b-ecdee493198a" config-ref="HTTP_Listener_config" path="/travis"/>
+		<logger level="INFO" doc:name="Logger" doc:id="bedbcd49-6f6c-4c5e-9438-bdfd296a7343" message="This is poc api which uses Travis to automate build and deployment"/>
+		<ee:transform doc:name="Transform Message" doc:id="4fd7a970-28e0-424b-bc5d-4ad98e006523" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+{"status" : "success"}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+	</flow>
+</mule>
